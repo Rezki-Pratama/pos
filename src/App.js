@@ -3,10 +3,9 @@ import logo from './logo.svg';
 import './styles/tailwind.output.css';
 import './styles/style.scss'
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
-import LoginComp from './components/LoginComp';
-import MenuComp from './components/MenuComp';
-import RegisterComp from './components/RegisterComp';
-import HomeComp from './components/HomeComp';
+import LoginComp from './components/page/LoginComp';
+import RegisterComp from './components/page/RegisterComp';
+import DashboardComp from './components/page/DashboardComp';
 
 //Data Global
 export const AuthContext = createContext()
@@ -51,7 +50,7 @@ const reducer = (state, action) => {
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState)
   return (
-    <div className="bg-gradient-to-tr from-teal-100 to-teal-300">
+    <div className="bg-gradient-to-tr from-teal-100 to-teal-300 h-full">
       <BrowserRouter>
         <Switch>
           <AuthContext.Provider value={{
@@ -59,15 +58,8 @@ function App() {
               dispatch
             }}>
 
-            <MenuComp/>
-
-            {!state.isAuthenticated ? 
-            <Redirect to={{ pathname: '/' }}/> :
-            <Redirect to={{ pathname: '/home' }}/> 
-            }
-
             <Route exact path="/" component={LoginComp}/>
-            <Route exact path="/home" component={HomeComp}/>
+            <Route exact path="/dashboard" component={DashboardComp}/>
             <Route exact path="/register" component={RegisterComp}/>
 
 

@@ -13,6 +13,23 @@
     background-color: #285e61; 
 }
 
+body {
+    background-color: #81e6d9;
+}
+
+.volume-content {
+
+    .volume {
+        width: 0px;
+        transition: all 0.5s;
+    }
+
+    &:hover .volume {
+        width: 100%;
+    }
+
+}
+
 @media only screen and (min-width: 768px) {
     .info-card {
         transform: rotate(-8deg);

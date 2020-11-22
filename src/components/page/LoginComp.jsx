@@ -1,13 +1,13 @@
 import React, {Fragment, useContext, useState } from 'react'
-import illustration from '../images/pos_illustration.svg';
+import illustration from '../../images/pos_illustration.svg';
 import axios from 'axios'
 import qs from 'querystring'
-import { AuthContext } from '../App';
+import { AuthContext } from '../../App';
 
 
 const apiUrl = 'http://127.0.0.1:3001/';
 
-function LoginComp() {
+function LoginComp(props) {
 
     const { dispatch } = useContext(AuthContext)
     console.log(dispatch)
@@ -56,10 +56,9 @@ function LoginComp() {
                        type: "LOGIN",
                        payload: res.data
                     }) 
-                    setData({
-                        ...data,
-                        message: res.data.message
-                    })
+
+                    props.history.push('/dashboard')
+
                     console.log('sukses')
                 } else {
                     setData({
