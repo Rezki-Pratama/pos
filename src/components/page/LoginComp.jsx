@@ -10,7 +10,6 @@ const apiUrl = 'http://127.0.0.1:3001/';
 function LoginComp(props) {
 
     const { dispatch } = useContext(AuthContext)
-    console.log(dispatch)
 
     const initalState = {
         email: '',
@@ -48,7 +47,6 @@ function LoginComp(props) {
             }
         }
 
-        console.log(reqBody)
 
         axios.post(apiUrl+'auth/v1/login', qs.stringify(reqBody),configHeaders).then(res => {
                 if(res.data.success === true) {
@@ -59,18 +57,18 @@ function LoginComp(props) {
 
                     props.history.push('/dashboard')
 
-                    console.log('sukses')
                 } else {
                     setData({
                         ...data,
                         isSubmit: false,
                         message: res.data.message
                     })
-                    console.log('gagal')
                 }
 
                 throw res
-        })
+            }).catch(e => {
+                console.log(e);
+            })
     }
 
     return (

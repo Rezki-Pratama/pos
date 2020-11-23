@@ -87,7 +87,7 @@ function LineChartFull() {
         <div className="w-full h-full shadow-xl bg-teal-300 rounded-3xl">
             <div className="shadow-inner rounded-3xl">
                 <div className="p-5">
-                    <Line width="900px" height="400px" data={data} options={option} />
+                    <Line data={data} options={option} />
                 </div>
             </div>
         </div>

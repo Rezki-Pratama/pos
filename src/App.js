@@ -1,4 +1,4 @@
-import React, {useReducer, createContext} from 'react'
+import React, {useReducer, createContext, useEffect} from 'react'
 import logo from './logo.svg';
 import './styles/tailwind.output.css';
 import './styles/style.scss'
@@ -7,17 +7,17 @@ import LoginComp from './components/page/LoginComp';
 import RegisterComp from './components/page/RegisterComp';
 import DashboardComp from './components/page/DashboardComp';
 
+
+
 //Data Global
 export const AuthContext = createContext()
 
 //Inisiasi state
 const initialState = {
-  isAuthenticated: false,
+  isAuthenticated: (localStorage.getItem("token") ? true : false),
   username: null,
   token: null
 }
-
-console.log(initialState)
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -48,7 +48,9 @@ const reducer = (state, action) => {
 }
 
 function App() {
+
   const [state, dispatch] = useReducer(reducer, initialState)
+
   return (
     <div className="bg-gradient-to-tr from-teal-100 to-teal-300 h-full">
       <BrowserRouter>
@@ -59,7 +61,7 @@ function App() {
             }}>
 
             <Route exact path="/" component={LoginComp}/>
-            <Route exact path="/dashboard" component={DashboardComp}/>
+            <Route path="/dashboard" component={DashboardComp}/>
             <Route exact path="/register" component={RegisterComp}/>
 
 
