@@ -3,7 +3,7 @@ import axios from 'axios'
 
 const apiUrl = 'http://127.0.0.1:3001/';
 
-function AddProduct() {
+function AddProduct(props) {
 
 const [product, setProduct] = useState({
         nama: '',
@@ -44,8 +44,11 @@ const addProduct = () => {
                         bgColor: '#285e61'
                     });
                     handleReset()
+                    props.history.push({
+                        pathname: '/dashboard/product',
+                        state: { detail: json.data.message }
+                        })
                 } else {
-                    console.log(json.data.message);
                     setProduct({
                         message: json.data.message,
                         display: 'block',

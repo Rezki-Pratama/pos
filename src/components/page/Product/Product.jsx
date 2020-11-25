@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState, useContext, useRef, useCallback } from 'react'
 import axios from 'axios'
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import qs from 'querystring'
 import { AuthContext } from '../../../App';
 
@@ -8,7 +8,11 @@ const apiUrl = 'http://127.0.0.1:3001/';
 
 function Product(props) {
 
-    const {state, dispatch} = useContext(AuthContext)
+    const { detail } =
+    (props.location && props.location.state) || {};
+
+    const {state} = useContext(AuthContext)
+    console.log('token use state' + state.token);
 
     const [product, setProduct] = useState({
         barang: [],
@@ -19,33 +23,35 @@ function Product(props) {
 
     const [pagination, setPagination] = useState(0)
 
-    const configHeaders = {
-            headers: {
-                'Content-Type' : 'application/json',
-                'Authorization': 'Bearer '+ state.token
-            }
-    }
+    const [token, setToken] = useState(JSON.parse(localStorage.getItem('token')));
+    console.log('token state' + token);
 
     const getData = () => {
-        console.log(pagination)
-        axios.get(apiUrl + 'barang',{
-            params: {
-                 pagination: pagination
-               } 
-        }).then(res => {
-            setProduct({
-                barang: res.data.data
-            }) 
-        }).catch(e => {
-            console.log(e)
-        })
-    }
+            axios.get(apiUrl + 'auth/v1/product',{
+                headers: {
+                    'Content-Type' : 'application/json',
+                    'Authorization': 'Bearer '+ token
+                },
+                params: {
+                    pagination: pagination
+                } 
+            }).then(res => {
+                setProduct({
+                    barang: res.data.data
+                }) 
+            }).catch(e => {
+                console.log(e)
+            })
+        }
 
     useEffect(() => {
 
-        getData();
-        console.log("jalan"+ getData()); 
-    },[pagination])
+            getData()
+
+            console.log(detail);
+            
+
+    },[detail,pagination])
 
     const nextPage = () => {
         if(Array.isArray(product.barang ) && product.barang.length) {
@@ -56,10 +62,6 @@ function Product(props) {
     const prevPage = () => {
         if(pagination >= 5) {
             setPagination(pagination - 5)
-            dispatch({
-                ...state,
-                token : localStorage.getItem("token")
-            })
         }
     }
 
