@@ -43,6 +43,10 @@ const editProduct = (id) => {
                         display: 'block',
                         bgColor: '#285e61'
                     })
+                    props.history.push({
+                        pathname: '/dashboard/product',
+                        state: { detail: json.data.message }
+                        })
                 } else {
                     setProduct({
                         message: json.data.message,
