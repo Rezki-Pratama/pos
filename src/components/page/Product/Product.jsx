@@ -24,7 +24,13 @@ function Product(props) {
     
     const [pagination, setPagination] = useState(0)
 
+    const [search, setSearch] = useState('')
+
     const [token] = useState(JSON.parse(localStorage.getItem('token')));
+
+    const handleSearch = event => {
+        setSearch(event.target.value)
+    }
 
     const getData = () => {
             axios.get(apiUrl + 'auth/v1/product',{
@@ -33,7 +39,8 @@ function Product(props) {
                     'Authorization': 'Bearer '+ token
                 },
                 params: {
-                    pagination: pagination
+                    pagination: pagination,
+                    search : search
                 } 
             }).then(res => {
                 setProduct({
@@ -48,7 +55,6 @@ function Product(props) {
 
             getData()
             //eslint-disable-next-line
-            console.log(messages);
             if(messages !== undefined){
                 setMessage({
                     message: messages,
@@ -60,9 +66,11 @@ function Product(props) {
             // return function cleanup() {
             //     getData()
             // }
+            console.log(search)
+            console.log(pagination)
             
 
-    },[messages,pagination])
+    },[messages, search, pagination])
 
     const nextPage = () => {
         if(Array.isArray(product.barang ) && product.barang.length) {
@@ -162,7 +170,7 @@ function Product(props) {
                             </svg>
                         </span>
                         <input placeholder="Search"
-                            className="appearance-none rounded-r rounded-l sm:rounded-l-none border border-gray-400 border-b block pl-8 pr-6 py-2 w-full bg-gray-300 text-sm placeholder-teal-800 text-gray-700 focus:bg-gray-100 focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none" />
+                            onChange={handleSearch} className="appearance-none rounded-r rounded-l sm:rounded-l-none border border-gray-400 border-b block pl-8 pr-6 py-2 w-full bg-gray-300 text-sm placeholder-teal-800 text-gray-700 focus:bg-gray-100 focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none" />
                     </div>
                 </div>
 
@@ -198,7 +206,9 @@ function Product(props) {
                             </thead>
                             <tbody className="bg-gray-300 text-sm text-teal-800">
 
-                                {product.barang.map(barang => 
+                                {(Array.isArray(product.barang ) && product.barang.length) ?
+                                
+                                product.barang.map(barang => 
 
                                     <tr key={barang.id}>
                                         <td className="px-5 py-5 border-b border-gray-200">
@@ -253,7 +263,32 @@ function Product(props) {
                                         </td>
                                     </tr>
 
-                                )}
+                                ) :
+                                
+                                <tr>
+                                    <td className="px-5 py-5 border-b border-gray-200">
+                                        <div className="flex items-center">
+                                            Data Kosong
+                                        </div>
+                                    </td>
+                                    <td className="px-5 py-5 border-b border-gray-200">
+                                        <div className="flex items-center">
+                                            Data Kosong
+                                        </div>
+                                    </td>
+                                    <td className="px-5 py-5 border-b border-gray-200">
+                                        <div className="flex items-center">
+                                            Data Kosong
+                                        </div>
+                                    </td>
+                                    <td className="px-5 py-5 border-b border-gray-200">
+                                        <div className="flex items-center">
+                                            Data Kosong
+                                        </div>
+                                    </td>
+                                </tr>
+                                
+                                }
 
                                 
                             </tbody>
